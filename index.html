@@ -2,172 +2,541 @@
 <html lang="de">
 <head>
   <meta charset="UTF-8" />
-  <title>B2 Exam Tracker – TELC & Goethe</title>
+  <title>B2 Exam Companion – TELC & Goethe</title>
   <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <meta name="description" content="Tracker und Schreib-Trainer für die Vorbereitung auf Goethe- und telc-B2-Prüfungen." />
   <style>
+    :root {
+      --bg: #f5f5f5;
+      --card-bg: #ffffff;
+      --primary: #2563eb;
+      --primary-soft: #dbeafe;
+      --border: #e5e7eb;
+      --text-main: #111827;
+      --text-muted: #6b7280;
+      --radius-lg: 14px;
+    }
+
+    * {
+      box-sizing: border-box;
+    }
+
     body {
+      margin: 0;
       font-family: system-ui, -apple-system, BlinkMacSystemFont, "Segoe UI", sans-serif;
-      max-width: 800px;
+      background: var(--bg);
+      color: var(--text-main);
+      line-height: 1.5;
+    }
+
+    .app {
+      max-width: 960px;
       margin: 0 auto;
       padding: 16px;
-      line-height: 1.5;
-      background: #f5f5f5;
     }
-    h1, h2 {
-      text-align: center;
-    }
-    .card {
-      background: #ffffff;
-      padding: 16px;
-      border-radius: 12px;
-      box-shadow: 0 2px 6px rgba(0,0,0,0.06);
+
+    header {
+      display: flex;
+      flex-wrap: wrap;
+      align-items: center;
+      justify-content: space-between;
+      gap: 8px;
       margin-bottom: 16px;
     }
+
+    .brand {
+      display: flex;
+      align-items: center;
+      gap: 8px;
+    }
+
+    .logo {
+      width: 32px;
+      height: 32px;
+      border-radius: 999px;
+      background: var(--primary-soft);
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      font-weight: 800;
+      color: var(--primary);
+      font-size: 0.95rem;
+    }
+
+    h1 {
+      font-size: 1.3rem;
+      margin: 0;
+    }
+
+    .subtitle {
+      font-size: 0.8rem;
+      color: var(--text-muted);
+    }
+
+    nav {
+      display: flex;
+      gap: 4px;
+      background: #e5e7eb;
+      border-radius: 999px;
+      padding: 3px;
+    }
+
+    .nav-btn {
+      border: none;
+      background: transparent;
+      padding: 6px 14px;
+      border-radius: 999px;
+      font-size: 0.85rem;
+      cursor: pointer;
+      color: var(--text-muted);
+      white-space: nowrap;
+    }
+
+    .nav-btn.active {
+      background: var(--card-bg);
+      color: var(--primary);
+      font-weight: 600;
+      box-shadow: 0 1px 4px rgba(0,0,0,0.08);
+    }
+
+    .card {
+      background: var(--card-bg);
+      border-radius: var(--radius-lg);
+      box-shadow: 0 2px 6px rgba(0,0,0,0.06);
+      padding: 16px;
+      margin-bottom: 16px;
+    }
+
+    h2 {
+      margin-top: 0;
+      font-size: 1.05rem;
+    }
+
     label {
       display: block;
       margin-bottom: 4px;
       font-weight: 600;
-      font-size: 0.9rem;
+      font-size: 0.85rem;
     }
-    select, input, textarea, button {
+
+    select,
+    input,
+    textarea {
       width: 100%;
-      box-sizing: border-box;
       padding: 8px;
-      margin-bottom: 12px;
-      border-radius: 8px;
-      border: 1px solid #ccc;
-      font-size: 0.95rem;
+      margin-bottom: 10px;
+      border-radius: 10px;
+      border: 1px solid #d1d5db;
+      font-size: 0.9rem;
       font-family: inherit;
+      background: #f9fafb;
     }
+
     textarea {
       min-height: 60px;
       resize: vertical;
     }
+
     button {
+      border-radius: 10px;
+      padding: 8px 12px;
+      font-size: 0.9rem;
+      font-family: inherit;
       cursor: pointer;
       border: none;
+    }
+
+    .btn-primary {
+      background: var(--primary);
+      color: #ffffff;
       font-weight: 600;
     }
-    .btn-primary {
-      background: #2563eb;
-      color: white;
-    }
+
     .btn-secondary {
       background: #e5e7eb;
-      color: #111827;
+      color: var(--text-main);
+      font-weight: 500;
     }
-    .btn-primary:disabled,
-    .btn-secondary:disabled {
+
+    button:disabled {
       opacity: 0.6;
       cursor: default;
     }
+
     .row {
       display: flex;
       gap: 8px;
     }
+
     .row > * {
       flex: 1;
     }
+
     .status {
-      font-size: 0.9rem;
-      color: #374151;
+      font-size: 0.85rem;
+      color: var(--text-muted);
       margin-bottom: 8px;
     }
+
     .status span {
       font-weight: 600;
+      color: var(--text-main);
     }
+
     table {
       width: 100%;
       border-collapse: collapse;
-      font-size: 0.9rem;
+      font-size: 0.85rem;
       margin-top: 8px;
     }
+
     th, td {
-      border-bottom: 1px solid #e5e7eb;
       padding: 6px 4px;
+      border-bottom: 1px solid var(--border);
       text-align: left;
       vertical-align: top;
     }
+
     th {
       background: #f3f4f6;
       font-weight: 600;
     }
+
     .tag {
       display: inline-block;
-      padding: 2px 6px;
+      padding: 2px 7px;
       border-radius: 999px;
-      font-size: 0.75rem;
+      font-size: 0.7rem;
       background: #e5e7eb;
       margin-right: 4px;
+      margin-bottom: 2px;
     }
+
     .tag-listening { background: #dbeafe; }
     .tag-reading   { background: #dcfce7; }
     .tag-writing   { background: #fee2e2; }
+
     .totals {
-      font-size: 0.95rem;
-      margin-top: 8px;
+      font-size: 0.9rem;
+      margin-top: 6px;
+      color: var(--text-main);
+    }
+
+    .pill {
+      display: inline-flex;
+      align-items: center;
+      gap: 4px;
+      background: #eff6ff;
+      color: #1d4ed8;
+      padding: 3px 8px;
+      border-radius: 999px;
+      font-size: 0.75rem;
+      margin-bottom: 6px;
+    }
+
+    .chips {
+      display: flex;
+      flex-wrap: wrap;
+      gap: 4px;
+      margin-bottom: 8px;
+    }
+
+    .chip {
+      font-size: 0.75rem;
+      padding: 3px 8px;
+      border-radius: 999px;
+      background: #f3f4f6;
+      cursor: pointer;
+    }
+
+    .chip:hover {
+      background: #e5e7eb;
+    }
+
+    .phrase-block {
+      margin-bottom: 12px;
+    }
+
+    .phrase-title {
+      font-weight: 600;
+      font-size: 0.9rem;
+      margin-bottom: 4px;
+    }
+
+    .phrase-list {
+      font-size: 0.85rem;
+      margin-left: 12px;
+    }
+
+    .phrase-list li {
+      margin-bottom: 2px;
+    }
+
+    .hint {
+      font-size: 0.8rem;
+      color: var(--text-muted);
+      margin-bottom: 4px;
+    }
+
+    .template-box {
+      border: 1px solid #e5e7eb;
+      border-radius: 10px;
+      padding: 8px;
+      background: #f9fafb;
+      font-size: 0.85rem;
+      white-space: pre-wrap;
+    }
+
+    .about-text {
+      font-size: 0.9rem;
+      color: var(--text-main);
+    }
+
+    .about-text p {
+      margin-top: 0;
+      margin-bottom: 8px;
+    }
+
+    .badge {
+      display: inline-block;
+      background: #f97316;
+      color: #fff;
+      font-size: 0.7rem;
+      padding: 2px 8px;
+      border-radius: 999px;
+      margin-left: 6px;
+    }
+
+    @media (max-width: 640px) {
+      header {
+        flex-direction: column;
+        align-items: flex-start;
+      }
+      nav {
+        width: 100%;
+      }
+      .row {
+        flex-direction: column;
+      }
     }
   </style>
 </head>
 <body>
-  <h1>B2 Exam Tracker</h1>
-  <h2>TELC & Goethe Vorbereitung</h2>
+  <div class="app">
+    <header>
+      <div class="brand">
+        <div class="logo">B2</div>
+        <div>
+          <h1>B2 Exam Companion</h1>
+          <div class="subtitle">Tracker & Schreibtrainer für Goethe / telc B2</div>
+        </div>
+      </div>
+      <nav>
+        <button class="nav-btn active" data-section="tracker">Tracker</button>
+        <button class="nav-btn" data-section="schreiben">Schreiben B2</button>
+        <button class="nav-btn" data-section="about">About</button>
+      </nav>
+    </header>
 
-  <div class="card">
-    <h3>Neue Lerneinheit</h3>
+    <!-- TRACKER SECTION -->
+    <section id="section-tracker">
+      <div class="card">
+        <h2>Study Tracker</h2>
+        <div class="pill">⏱ Nur im Browser gespeichert – keine Registrierung</div>
 
-    <label for="taskType">Aufgabentyp</label>
-    <select id="taskType">
-      <option value="Lesen">Lesen (Reading)</option>
-      <option value="Hören">Hören (Listening)</option>
-      <option value="Schreiben">Schreiben (Writing)</option>
-      <option value="Grammatik">Grammatik</option>
-      <option value="Wortschatz">Wortschatz</option>
-    </select>
+        <label for="taskType">Aufgabentyp</label>
+        <select id="taskType">
+          <option value="Lesen">Lesen (Reading)</option>
+          <option value="Hören">Hören (Listening)</option>
+          <option value="Schreiben">Schreiben (Writing)</option>
+          <option value="Grammatik">Grammatik</option>
+          <option value="Wortschatz">Wortschatz</option>
+        </select>
 
-    <label for="examType">Prüfungsformat (optional)</label>
-    <select id="examType">
-      <option value="">— nicht ausgewählt —</option>
-      <option value="Goethe B2">Goethe B2</option>
-      <option value="telc B2">telc B2</option>
-      <option value="allgemein">Allgemeines Training</option>
-    </select>
+        <label for="examType">Prüfungsformat (optional)</label>
+        <select id="examType">
+          <option value="">— nicht ausgewählt —</option>
+          <option value="Goethe B2">Goethe B2</option>
+          <option value="telc B2">telc B2</option>
+          <option value="Allgemein">Allgemeines Training</option>
+        </select>
 
-    <label for="description">Was genau machst du?</label>
-    <textarea id="description" placeholder="z.B. Goethe B2 Modelltest 1 – Lesen, Teil 1"></textarea>
+        <label for="description">Was genau machst du?</label>
+        <textarea id="description" placeholder="z.B. Goethe B2 Modelltest 1 – Lesen, Teil 1"></textarea>
 
-    <div class="status" id="timerStatus">
-      ⏳ Таймер не запущен.
-    </div>
+        <div class="chips">
+          <div class="chip" data-desc="Goethe B2 Modelltest – Lesen, Teil 1">Lesen Teil 1</div>
+          <div class="chip" data-desc="Goethe B2 Modelltest – Hören, Teil 3">Hören Teil 3</div>
+          <div class="chip" data-desc="telc B2 – Schriftliche Prüfung, Teil 1 (Formeller Brief)">telc Brief</div>
+        </div>
 
-    <div class="row">
-      <button id="startBtn" class="btn-primary">▶ Start</button>
-      <button id="stopBtn" class="btn-secondary" disabled>⏹ Stop & Speichern</button>
-    </div>
-  </div>
+        <div class="status" id="timerStatus">
+          ⏳ Timer nicht gestartet.
+        </div>
 
-  <div class="card">
-    <h3>Statistik</h3>
-    <div class="totals" id="totals">
-      Пока нет данных.
-    </div>
-    <table id="sessionsTable">
-      <thead>
-        <tr>
-          <th>Datum</th>
-          <th>Typ</th>
-          <th>Beschreibung</th>
-          <th>Dauer (Min)</th>
-        </tr>
-      </thead>
-      <tbody>
-        <!-- строки будут добавляться скриптом -->
-      </tbody>
-    </table>
+        <div class="row">
+          <button id="startBtn" class="btn-primary">▶ Start</button>
+          <button id="stopBtn" class="btn-secondary" disabled>⏹ Stop & Speichern</button>
+        </div>
+      </div>
+
+      <div class="card">
+        <h2>Statistik</h2>
+        <div class="totals" id="totals">Noch keine Daten.</div>
+        <table id="sessionsTable">
+          <thead>
+            <tr>
+              <th>Datum</th>
+              <th>Typ</th>
+              <th>Beschreibung</th>
+              <th>Dauer (Min)</th>
+            </tr>
+          </thead>
+          <tbody></tbody>
+        </table>
+      </div>
+    </section>
+
+    <!-- SCHREIBEN SECTION -->
+    <section id="section-schreiben" style="display:none;">
+      <div class="card">
+        <h2>Schreiben B2 – Templates & Phrasen</h2>
+        <div class="hint">
+          Nutze diese Bausteine für Goethe- und telc-B2-Briefe. Du kannst Text direkt markieren & kopieren.
+        </div>
+
+        <h3>1. Formelle Anfrage / Bitte um Information</h3>
+        <div class="template-box">
+Sehr geehrte Damen und Herren,
+
+ich habe Ihre Anzeige auf ... gelesen und interessiere mich sehr für ...
+In diesem Zusammenhang hätte ich einige Fragen.
+
+Erstens würde ich gern wissen, ...
+Außerdem interessiert mich, ...
+Könnten Sie mir bitte mitteilen, ...
+
+Ich würde mich sehr über eine baldige Antwort freuen.
+
+Mit freundlichen Grüßen
+[Ihr Name]
+        </div>
+
+        <h3>2. Beschwerde / Reklamation</h3>
+        <div class="template-box">
+Sehr geehrte Damen und Herren,
+
+ich wende mich an Sie, weil ich mit ... nicht zufrieden bin.
+Am [Datum] habe ich bei Ihnen ... gekauft/gebucht.
+
+Leider musste ich feststellen, dass ...
+Außerdem ...
+
+Aus diesem Grund möchte ich Sie bitten, ...
+Ich hoffe, dass wir eine zufriedenstellende Lösung finden können.
+
+Mit freundlichen Grüßen
+[Ihr Name]
+        </div>
+
+        <h3>3. Meinung äußern / Stellungnahme</h3>
+        <div class="template-box">
+Einleitung:
+In letzter Zeit wird oft darüber diskutiert, ob ...
+In diesem Text möchte ich meine Meinung zu diesem Thema äußern.
+
+Argument 1:
+Zunächst spricht dafür, dass ...
+Außerdem ...
+
+Argument 2 (Gegenargument):
+Auf der anderen Seite gibt es auch Nachteile. Zum Beispiel ...
+Viele Menschen meinen, dass ...
+
+Eigene Meinung:
+Meiner Meinung nach ...
+Ich bin der Ansicht, dass ...
+
+Schluss:
+Zusammenfassend lässt sich sagen, dass ...
+Deshalb bin ich dafür/dagegen, dass ...
+        </div>
+      </div>
+
+      <div class="card">
+        <h2>Nützliche B2-Phrasen</h2>
+
+        <div class="phrase-block">
+          <div class="phrase-title">Struktur / Redemittel</div>
+          <ul class="phrase-list">
+            <li>Zum einen ..., zum anderen ...</li>
+            <li>Darüber hinaus / Außerdem / Zusätzlich</li>
+            <li>Im Vergleich zu ...</li>
+            <li>Ein weiterer wichtiger Punkt ist, dass ...</li>
+            <li>Abschließend möchte ich sagen, dass ...</li>
+          </ul>
+        </div>
+
+        <div class="phrase-block">
+          <div class="phrase-title">Meinung ausdrücken</div>
+          <ul class="phrase-list">
+            <li>Meiner Meinung nach ...</li>
+            <li>Ich bin der Ansicht, dass ...</li>
+            <li>Aus meiner Sicht ...</li>
+            <li>Ich vertrete die Meinung, dass ...</li>
+          </ul>
+        </div>
+
+        <div class="phrase-block">
+          <div class="phrase-title">Höfliche Bitte / Nachfrage</div>
+          <ul class="phrase-list">
+            <li>Könnten Sie mir bitte sagen, ...?</li>
+            <li>Wäre es möglich, dass ...?</li>
+            <li>Ich wäre Ihnen sehr dankbar, wenn ...</li>
+          </ul>
+        </div>
+      </div>
+    </section>
+
+    <!-- ABOUT SECTION -->
+    <section id="section-about" style="display:none;">
+      <div class="card">
+        <h2>About B2 Exam Companion <span class="badge">MVP</span></h2>
+        <div class="about-text">
+          <p>Dieses kleine Tool hilft Lernenden, sich auf <strong>Goethe-</strong> und <strong>telc-B2-Prüfungen</strong> vorzubereiten:</p>
+          <ul>
+            <li>⏱ <strong>Tracker</strong>: Miss deine Lernzeit für Lesen, Hören, Schreiben usw.</li>
+            <li>✍️ <strong>Schreiben-Bereich</strong>: Vorlagen & Phrasen für typische B2-Aufgaben.</li>
+            <li>🔐 <strong>Datenschutz</strong>: Alle Daten werden nur im Browser (localStorage) gespeichert.</li>
+          </ul>
+          <p>Geplant für später: mehr Schreibaufgaben, Vokabellisten für B2-Themen und evtl. Exportfunktion für Lehrer:innen.</p>
+        </div>
+      </div>
+    </section>
   </div>
 
   <script>
-    // Простое приложение для отслеживания времени подготовки
+    // ---------- NAVIGATION ----------
+    const navButtons = document.querySelectorAll('.nav-btn');
+    const sections = {
+      tracker: document.getElementById('section-tracker'),
+      schreiben: document.getElementById('section-schreiben'),
+      about: document.getElementById('section-about')
+    };
+
+    navButtons.forEach(btn => {
+      btn.addEventListener('click', () => {
+        const target = btn.getAttribute('data-section');
+        navButtons.forEach(b => b.classList.remove('active'));
+        btn.classList.add('active');
+
+        Object.entries(sections).forEach(([key, section]) => {
+          section.style.display = key === target ? 'block' : 'none';
+        });
+      });
+    });
+
+    // ---------- TRACKER LOGIK ----------
     const startBtn = document.getElementById('startBtn');
     const stopBtn = document.getElementById('stopBtn');
     const timerStatus = document.getElementById('timerStatus');
@@ -176,17 +545,16 @@
     const descriptionEl = document.getElementById('description');
     const sessionsTableBody = document.querySelector('#sessionsTable tbody');
     const totalsEl = document.getElementById('totals');
+    const chips = document.querySelectorAll('.chip');
 
     let startTime = null;
-    let currentTimerId = null;
 
     function loadSessions() {
       const raw = localStorage.getItem('studySessions_b2');
       if (!raw) return [];
       try {
         return JSON.parse(raw);
-      } catch (e) {
-        console.error('Fehler beim Lesen aus localStorage', e);
+      } catch {
         return [];
       }
     }
@@ -196,7 +564,6 @@
     }
 
     function formatDate(dateStr) {
-      // Ожидаем ISO-строку
       const d = new Date(dateStr);
       if (Number.isNaN(d.getTime())) return dateStr;
       return d.toLocaleDateString('de-DE', {
@@ -211,7 +578,7 @@
       sessionsTableBody.innerHTML = '';
 
       if (sessions.length === 0) {
-        totalsEl.textContent = 'Пока нет данных.';
+        totalsEl.textContent = 'Noch keine Daten.';
         return;
       }
 
@@ -220,10 +587,7 @@
 
       sessions.forEach(session => {
         totalMinutes += session.durationMinutes;
-        if (!totalsByType[session.taskType]) {
-          totalsByType[session.taskType] = 0;
-        }
-        totalsByType[session.taskType] += session.durationMinutes;
+        totalsByType[session.taskType] = (totalsByType[session.taskType] || 0) + session.durationMinutes;
 
         const tr = document.createElement('tr');
 
@@ -260,22 +624,19 @@
         sessionsTableBody.appendChild(tr);
       });
 
-      // Текст с итогами
-      let totalsText = `Общее время: ${totalMinutes.toFixed(1)} мин.`;
-      totalsText += ' | По видам: ';
+      let totalsText = `Gesamt: ${totalMinutes.toFixed(1)} Min.`;
+      totalsText += ' | Nach Typ: ';
       totalsText += Object.entries(totalsByType)
-        .map(([type, mins]) => `${type}: ${mins.toFixed(1)} мин.`)
+        .map(([type, mins]) => `${type}: ${mins.toFixed(1)} Min.`)
         .join(' • ');
 
       totalsEl.textContent = totalsText;
     }
 
     function startTimer() {
-      if (startTime !== null) return; // уже запущен
-
+      if (startTime !== null) return;
       startTime = Date.now();
-      timerStatus.innerHTML = '⏳ Таймер запущен…';
-
+      timerStatus.innerHTML = '⏳ Timer läuft ...';
       startBtn.disabled = true;
       stopBtn.disabled = false;
     }
@@ -288,7 +649,7 @@
       const minutes = diffMs / 60000;
 
       if (minutes < 0.1) {
-        timerStatus.innerHTML = '⚠ Слишком короткая сессия, не сохраняю.';
+        timerStatus.innerHTML = '⚠ Zu kurze Sitzung, nicht gespeichert.';
         startTime = null;
         startBtn.disabled = false;
         stopBtn.disabled = true;
@@ -296,17 +657,19 @@
       }
 
       const sessions = loadSessions();
+      const rounded = Math.round(minutes * 10) / 10;
       const newSession = {
         date: new Date().toISOString(),
         taskType: taskTypeEl.value,
         examType: examTypeEl.value || '',
         description: descriptionEl.value.trim(),
-        durationMinutes: Math.round(minutes * 10) / 10
+        durationMinutes: rounded
       };
+
       sessions.push(newSession);
       saveSessions(sessions);
 
-      timerStatus.innerHTML = `✅ Сохранено: ${newSession.durationMinutes.toFixed(1)} мин.`;
+      timerStatus.innerHTML = `✅ Gespeichert: ${rounded.toFixed(1)} Min.`;
       startTime = null;
       startBtn.disabled = false;
       stopBtn.disabled = true;
@@ -316,7 +679,14 @@
     startBtn.addEventListener('click', startTimer);
     stopBtn.addEventListener('click', stopTimer);
 
-    // отрисовать данные при загрузке
+    chips.forEach(chip => {
+      chip.addEventListener('click', () => {
+        const text = chip.getAttribute('data-desc');
+        descriptionEl.value = text;
+      });
+    });
+
+    // initial render
     renderSessions();
   </script>
 </body>
