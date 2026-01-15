@@ -1,0 +1,323 @@
+<!DOCTYPE html>
+<html lang="de">
+<head>
+  <meta charset="UTF-8" />
+  <title>B2 Exam Tracker – TELC & Goethe</title>
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <style>
+    body {
+      font-family: system-ui, -apple-system, BlinkMacSystemFont, "Segoe UI", sans-serif;
+      max-width: 800px;
+      margin: 0 auto;
+      padding: 16px;
+      line-height: 1.5;
+      background: #f5f5f5;
+    }
+    h1, h2 {
+      text-align: center;
+    }
+    .card {
+      background: #ffffff;
+      padding: 16px;
+      border-radius: 12px;
+      box-shadow: 0 2px 6px rgba(0,0,0,0.06);
+      margin-bottom: 16px;
+    }
+    label {
+      display: block;
+      margin-bottom: 4px;
+      font-weight: 600;
+      font-size: 0.9rem;
+    }
+    select, input, textarea, button {
+      width: 100%;
+      box-sizing: border-box;
+      padding: 8px;
+      margin-bottom: 12px;
+      border-radius: 8px;
+      border: 1px solid #ccc;
+      font-size: 0.95rem;
+      font-family: inherit;
+    }
+    textarea {
+      min-height: 60px;
+      resize: vertical;
+    }
+    button {
+      cursor: pointer;
+      border: none;
+      font-weight: 600;
+    }
+    .btn-primary {
+      background: #2563eb;
+      color: white;
+    }
+    .btn-secondary {
+      background: #e5e7eb;
+      color: #111827;
+    }
+    .btn-primary:disabled,
+    .btn-secondary:disabled {
+      opacity: 0.6;
+      cursor: default;
+    }
+    .row {
+      display: flex;
+      gap: 8px;
+    }
+    .row > * {
+      flex: 1;
+    }
+    .status {
+      font-size: 0.9rem;
+      color: #374151;
+      margin-bottom: 8px;
+    }
+    .status span {
+      font-weight: 600;
+    }
+    table {
+      width: 100%;
+      border-collapse: collapse;
+      font-size: 0.9rem;
+      margin-top: 8px;
+    }
+    th, td {
+      border-bottom: 1px solid #e5e7eb;
+      padding: 6px 4px;
+      text-align: left;
+      vertical-align: top;
+    }
+    th {
+      background: #f3f4f6;
+      font-weight: 600;
+    }
+    .tag {
+      display: inline-block;
+      padding: 2px 6px;
+      border-radius: 999px;
+      font-size: 0.75rem;
+      background: #e5e7eb;
+      margin-right: 4px;
+    }
+    .tag-listening { background: #dbeafe; }
+    .tag-reading   { background: #dcfce7; }
+    .tag-writing   { background: #fee2e2; }
+    .totals {
+      font-size: 0.95rem;
+      margin-top: 8px;
+    }
+  </style>
+</head>
+<body>
+  <h1>B2 Exam Tracker</h1>
+  <h2>TELC & Goethe Vorbereitung</h2>
+
+  <div class="card">
+    <h3>Neue Lerneinheit</h3>
+
+    <label for="taskType">Aufgabentyp</label>
+    <select id="taskType">
+      <option value="Lesen">Lesen (Reading)</option>
+      <option value="Hören">Hören (Listening)</option>
+      <option value="Schreiben">Schreiben (Writing)</option>
+      <option value="Grammatik">Grammatik</option>
+      <option value="Wortschatz">Wortschatz</option>
+    </select>
+
+    <label for="examType">Prüfungsformat (optional)</label>
+    <select id="examType">
+      <option value="">— nicht ausgewählt —</option>
+      <option value="Goethe B2">Goethe B2</option>
+      <option value="telc B2">telc B2</option>
+      <option value="allgemein">Allgemeines Training</option>
+    </select>
+
+    <label for="description">Was genau machst du?</label>
+    <textarea id="description" placeholder="z.B. Goethe B2 Modelltest 1 – Lesen, Teil 1"></textarea>
+
+    <div class="status" id="timerStatus">
+      ⏳ Таймер не запущен.
+    </div>
+
+    <div class="row">
+      <button id="startBtn" class="btn-primary">▶ Start</button>
+      <button id="stopBtn" class="btn-secondary" disabled>⏹ Stop & Speichern</button>
+    </div>
+  </div>
+
+  <div class="card">
+    <h3>Statistik</h3>
+    <div class="totals" id="totals">
+      Пока нет данных.
+    </div>
+    <table id="sessionsTable">
+      <thead>
+        <tr>
+          <th>Datum</th>
+          <th>Typ</th>
+          <th>Beschreibung</th>
+          <th>Dauer (Min)</th>
+        </tr>
+      </thead>
+      <tbody>
+        <!-- строки будут добавляться скриптом -->
+      </tbody>
+    </table>
+  </div>
+
+  <script>
+    // Простое приложение для отслеживания времени подготовки
+    const startBtn = document.getElementById('startBtn');
+    const stopBtn = document.getElementById('stopBtn');
+    const timerStatus = document.getElementById('timerStatus');
+    const taskTypeEl = document.getElementById('taskType');
+    const examTypeEl = document.getElementById('examType');
+    const descriptionEl = document.getElementById('description');
+    const sessionsTableBody = document.querySelector('#sessionsTable tbody');
+    const totalsEl = document.getElementById('totals');
+
+    let startTime = null;
+    let currentTimerId = null;
+
+    function loadSessions() {
+      const raw = localStorage.getItem('studySessions_b2');
+      if (!raw) return [];
+      try {
+        return JSON.parse(raw);
+      } catch (e) {
+        console.error('Fehler beim Lesen aus localStorage', e);
+        return [];
+      }
+    }
+
+    function saveSessions(sessions) {
+      localStorage.setItem('studySessions_b2', JSON.stringify(sessions));
+    }
+
+    function formatDate(dateStr) {
+      // Ожидаем ISO-строку
+      const d = new Date(dateStr);
+      if (Number.isNaN(d.getTime())) return dateStr;
+      return d.toLocaleDateString('de-DE', {
+        year: 'numeric',
+        month: '2-digit',
+        day: '2-digit'
+      });
+    }
+
+    function renderSessions() {
+      const sessions = loadSessions();
+      sessionsTableBody.innerHTML = '';
+
+      if (sessions.length === 0) {
+        totalsEl.textContent = 'Пока нет данных.';
+        return;
+      }
+
+      let totalMinutes = 0;
+      const totalsByType = {};
+
+      sessions.forEach(session => {
+        totalMinutes += session.durationMinutes;
+        if (!totalsByType[session.taskType]) {
+          totalsByType[session.taskType] = 0;
+        }
+        totalsByType[session.taskType] += session.durationMinutes;
+
+        const tr = document.createElement('tr');
+
+        const dateTd = document.createElement('td');
+        dateTd.textContent = formatDate(session.date);
+
+        const typeTd = document.createElement('td');
+        const typeSpan = document.createElement('span');
+        typeSpan.textContent = session.taskType;
+        typeSpan.classList.add('tag');
+        if (session.taskType === 'Hören') typeSpan.classList.add('tag-listening');
+        if (session.taskType === 'Lesen') typeSpan.classList.add('tag-reading');
+        if (session.taskType === 'Schreiben') typeSpan.classList.add('tag-writing');
+        typeTd.appendChild(typeSpan);
+
+        if (session.examType) {
+          const examSpan = document.createElement('span');
+          examSpan.textContent = session.examType;
+          examSpan.classList.add('tag');
+          typeTd.appendChild(examSpan);
+        }
+
+        const descTd = document.createElement('td');
+        descTd.textContent = session.description || '—';
+
+        const durTd = document.createElement('td');
+        durTd.textContent = session.durationMinutes.toFixed(1).replace('.', ',');
+
+        tr.appendChild(dateTd);
+        tr.appendChild(typeTd);
+        tr.appendChild(descTd);
+        tr.appendChild(durTd);
+
+        sessionsTableBody.appendChild(tr);
+      });
+
+      // Текст с итогами
+      let totalsText = `Общее время: ${totalMinutes.toFixed(1)} мин.`;
+      totalsText += ' | По видам: ';
+      totalsText += Object.entries(totalsByType)
+        .map(([type, mins]) => `${type}: ${mins.toFixed(1)} мин.`)
+        .join(' • ');
+
+      totalsEl.textContent = totalsText;
+    }
+
+    function startTimer() {
+      if (startTime !== null) return; // уже запущен
+
+      startTime = Date.now();
+      timerStatus.innerHTML = '⏳ Таймер запущен…';
+
+      startBtn.disabled = true;
+      stopBtn.disabled = false;
+    }
+
+    function stopTimer() {
+      if (startTime === null) return;
+
+      const endTime = Date.now();
+      const diffMs = endTime - startTime;
+      const minutes = diffMs / 60000;
+
+      if (minutes < 0.1) {
+        timerStatus.innerHTML = '⚠ Слишком короткая сессия, не сохраняю.';
+        startTime = null;
+        startBtn.disabled = false;
+        stopBtn.disabled = true;
+        return;
+      }
+
+      const sessions = loadSessions();
+      const newSession = {
+        date: new Date().toISOString(),
+        taskType: taskTypeEl.value,
+        examType: examTypeEl.value || '',
+        description: descriptionEl.value.trim(),
+        durationMinutes: Math.round(minutes * 10) / 10
+      };
+      sessions.push(newSession);
+      saveSessions(sessions);
+
+      timerStatus.innerHTML = `✅ Сохранено: ${newSession.durationMinutes.toFixed(1)} мин.`;
+      startTime = null;
+      startBtn.disabled = false;
+      stopBtn.disabled = true;
+      renderSessions();
+    }
+
+    startBtn.addEventListener('click', startTimer);
+    stopBtn.addEventListener('click', stopTimer);
+
+    // отрисовать данные при загрузке
+    renderSessions();
+  </script>
+</body>
+</html>
