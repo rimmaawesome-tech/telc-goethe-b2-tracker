@@ -4,7 +4,7 @@
   <meta charset="UTF-8" />
   <title>B2 Exam Companion – TELC & Goethe</title>
   <meta name="viewport" content="width=device-width, initial-scale=1" />
-  <meta name="description" content="Tracker und Schreib-Trainer für die Vorbereitung auf Goethe- und telc-B2-Prüfungen." />
+  <meta name="description" content="Tracker, Schreibtrainer und Übungstests zur Vorbereitung auf Goethe- und telc-B2-Prüfungen." />
   <style>
     :root {
       --bg: #f5f5f5;
@@ -17,9 +17,7 @@
       --radius-lg: 14px;
     }
 
-    * {
-      box-sizing: border-box;
-    }
+    * { box-sizing: border-box; }
 
     body {
       margin: 0;
@@ -112,6 +110,11 @@
       font-size: 1.05rem;
     }
 
+    h3 {
+      margin-top: 0.3rem;
+      font-size: 0.95rem;
+    }
+
     label {
       display: block;
       margin-bottom: 4px;
@@ -119,9 +122,7 @@
       font-size: 0.85rem;
     }
 
-    select,
-    input,
-    textarea {
+    select, input, textarea {
       width: 100%;
       padding: 8px;
       margin-bottom: 10px;
@@ -163,14 +164,8 @@
       cursor: default;
     }
 
-    .row {
-      display: flex;
-      gap: 8px;
-    }
-
-    .row > * {
-      flex: 1;
-    }
+    .row { display: flex; gap: 8px; }
+    .row > * { flex: 1; }
 
     .status {
       font-size: 0.85rem;
@@ -249,13 +244,9 @@
       cursor: pointer;
     }
 
-    .chip:hover {
-      background: #e5e7eb;
-    }
+    .chip:hover { background: #e5e7eb; }
 
-    .phrase-block {
-      margin-bottom: 12px;
-    }
+    .phrase-block { margin-bottom: 12px; }
 
     .phrase-title {
       font-weight: 600;
@@ -268,9 +259,7 @@
       margin-left: 12px;
     }
 
-    .phrase-list li {
-      margin-bottom: 2px;
-    }
+    .phrase-list li { margin-bottom: 2px; }
 
     .hint {
       font-size: 0.8rem;
@@ -285,6 +274,7 @@
       background: #f9fafb;
       font-size: 0.85rem;
       white-space: pre-wrap;
+      margin-bottom: 10px;
     }
 
     .about-text {
@@ -307,17 +297,67 @@
       margin-left: 6px;
     }
 
+    /* Tests */
+    .test-text {
+      font-size: 0.9rem;
+      margin-bottom: 8px;
+    }
+
+    .question-block {
+      margin-bottom: 10px;
+      padding: 6px 0;
+      border-bottom: 1px dashed #e5e7eb;
+    }
+
+    .question-title {
+      font-weight: 600;
+      font-size: 0.9rem;
+      margin-bottom: 4px;
+    }
+
+    .answer-option {
+      display: block;
+      font-size: 0.85rem;
+      margin-bottom: 2px;
+    }
+
+    .feedback {
+      font-size: 0.8rem;
+      margin-top: 4px;
+    }
+
+    .feedback.ok { color: #16a34a; }
+    .feedback.bad { color: #b91c1c; }
+
+    .result-summary {
+      font-size: 0.9rem;
+      margin-top: 8px;
+      font-weight: 600;
+    }
+
+    .transcript-box {
+      border-radius: 10px;
+      border: 1px solid #e5e7eb;
+      padding: 8px;
+      background: #f9fafb;
+      font-size: 0.85rem;
+      margin-top: 8px;
+      white-space: pre-wrap;
+    }
+
+    .ki-box {
+      border-radius: 10px;
+      border: 1px dashed #9ca3af;
+      background: #f9fafb;
+      padding: 8px;
+      font-size: 0.8rem;
+      margin-top: 8px;
+    }
+
     @media (max-width: 640px) {
-      header {
-        flex-direction: column;
-        align-items: flex-start;
-      }
-      nav {
-        width: 100%;
-      }
-      .row {
-        flex-direction: column;
-      }
+      header { flex-direction: column; align-items: flex-start; }
+      nav { width: 100%; }
+      .row { flex-direction: column; }
     }
   </style>
 </head>
@@ -328,11 +368,12 @@
         <div class="logo">B2</div>
         <div>
           <h1>B2 Exam Companion</h1>
-          <div class="subtitle">Tracker & Schreibtrainer für Goethe / telc B2</div>
+          <div class="subtitle">Tracker, Schreiben & Tests für Goethe / telc B2</div>
         </div>
       </div>
       <nav>
         <button class="nav-btn active" data-section="tracker">Tracker</button>
+        <button class="nav-btn" data-section="tests">Tests</button>
         <button class="nav-btn" data-section="schreiben">Schreiben B2</button>
         <button class="nav-btn" data-section="about">About</button>
       </nav>
@@ -394,6 +435,153 @@
           </thead>
           <tbody></tbody>
         </table>
+      </div>
+    </section>
+
+    <!-- TESTS SECTION -->
+    <section id="section-tests" style="display:none;">
+      <div class="card">
+        <h2>Lesen – Beispieltest B2</h2>
+        <div class="hint">
+          Lies den Text und beantworte die Fragen. Danach bekommst du eine Auswertung mit Erklärungen.
+        </div>
+        <div class="test-text">
+          Immer mehr Menschen lernen Sprachen online. Sie entscheiden sich für digitale Kurse, weil sie flexibler sind als traditionelle Sprachschulen. 
+          Man kann lernen, wann und wo man möchte. Besonders Berufstätige und Eltern mit kleinen Kindern profitieren davon. 
+          Allerdings braucht das Lernen zu Hause viel Selbstdisziplin. Wer keinen festen Lernplan hat, vergisst schnell seine Ziele 
+          und macht längere Pausen. Viele Plattformen versuchen deshalb, die Lernenden mit Erinnerungen, Lernstatistiken und kleinen 
+          Erfolgsmeldungen zu motivieren.
+        </div>
+
+        <form id="lesenForm">
+          <div class="question-block">
+            <div class="question-title">1. Worum geht es in diesem Text hauptsächlich?</div>
+            <label class="answer-option">
+              <input type="radio" name="lesen_q1" value="a" />
+              A: Um technische Probleme beim Online-Unterricht
+            </label>
+            <label class="answer-option">
+              <input type="radio" name="lesen_q1" value="b" />
+              B: Um Vorteile und Herausforderungen von Online-Sprachkursen
+            </label>
+            <label class="answer-option">
+              <input type="radio" name="lesen_q1" value="c" />
+              C: Um neue Prüfungsformate an Sprachschulen
+            </label>
+            <div class="feedback" id="feedback-lesen_q1"></div>
+          </div>
+
+          <div class="question-block">
+            <div class="question-title">2. Welche Personengruppe wird als Beispiel genannt?</div>
+            <label class="answer-option">
+              <input type="radio" name="lesen_q2" value="a" />
+              A: Schüler, die viel reisen
+            </label>
+            <label class="answer-option">
+              <input type="radio" name="lesen_q2" value="b" />
+              B: Berufstätige und Eltern mit kleinen Kindern
+            </label>
+            <label class="answer-option">
+              <input type="radio" name="lesen_q2" value="c" />
+              C: Rentner, die neue Hobbys suchen
+            </label>
+            <div class="feedback" id="feedback-lesen_q2"></div>
+          </div>
+
+          <div class="question-block">
+            <div class="question-title">3. Warum nutzen Plattformen Erinnerungen und Statistiken?</div>
+            <label class="answer-option">
+              <input type="radio" name="lesen_q3" value="a" />
+              A: Weil viele Menschen sonst ihre Motivation verlieren
+            </label>
+            <label class="answer-option">
+              <input type="radio" name="lesen_q3" value="b" />
+              B: Um technische Probleme schneller zu lösen
+            </label>
+            <label class="answer-option">
+              <input type="radio" name="lesen_q3" value="c" />
+              C: Damit die Kurse günstiger werden
+            </label>
+            <div class="feedback" id="feedback-lesen_q3"></div>
+          </div>
+
+          <button type="button" class="btn-primary" id="checkLesenBtn">Antworten überprüfen</button>
+        </form>
+        <div id="lesenResultSummary" class="result-summary"></div>
+      </div>
+
+      <div class="card">
+        <h2>Hören – Beispiel B2</h2>
+        <div class="hint">
+          1. Höre den kurzen Text. 2. Beantworte die Fragen. 3. Schau dir das Transkript an, wenn nötig.
+        </div>
+
+        <!--
+          АУДИО:
+          - создай папку "audio" в репозитории
+          - запиши этот текст в mp3 (например, телефоном) и назови файл "hoeren1.mp3"
+          - загрузи в папку audio
+        -->
+        <audio controls>
+          <source src="audio/hoeren1.mp3" type="audio/mpeg" />
+          Dein Browser unterstützt das Audio-Element nicht.
+        </audio>
+
+        <div class="hint">
+          Wenn noch keine eigene Aufnahme vorhanden ist, bleibt der Player einfach stumm, bis du die Datei hochlädst.
+        </div>
+
+        <div style="margin-top:8px;">
+          <button type="button" class="btn-secondary" id="toggleTranscriptBtn">
+            Transkript anzeigen
+          </button>
+          <div id="transcriptBox" class="transcript-box" style="display:none;">
+Heute sprechen viele Menschen darüber, wie sie am liebsten lernen. 
+Manche besuchen einen klassischen Kurs in der Sprachschule. 
+Andere hören lieber Podcasts oder schauen Lernvideos auf dem Handy. 
+Wichtig ist nicht nur das Material, sondern auch, dass man regelmäßig übt. 
+Schon 20 Minuten am Tag können einen großen Unterschied machen.
+          </div>
+        </div>
+
+        <form id="hoerenForm" style="margin-top:10px;">
+          <div class="question-block">
+            <div class="question-title">1. Was ist das Hauptthema des Hörtexts?</div>
+            <label class="answer-option">
+              <input type="radio" name="hoeren_q1" value="a" />
+              A: Welche Apps technisch am besten funktionieren
+            </label>
+            <label class="answer-option">
+              <input type="radio" name="hoeren_q1" value="b" />
+              B: Verschiedene Möglichkeiten, wie Menschen lernen
+            </label>
+            <label class="answer-option">
+              <input type="radio" name="hoeren_q1" value="c" />
+              C: Die Geschichte der Sprachschulen
+            </label>
+            <div class="feedback" id="feedback-hoeren_q1"></div>
+          </div>
+
+          <div class="question-block">
+            <div class="question-title">2. Was ist laut dem Text besonders wichtig?</div>
+            <label class="answer-option">
+              <input type="radio" name="hoeren_q2" value="a" />
+              A: Teure Lehrbücher zu kaufen
+            </label>
+            <label class="answer-option">
+              <input type="radio" name="hoeren_q2" value="b" />
+              B: Dass man jeden Tag ein bisschen übt
+            </label>
+            <label class="answer-option">
+              <input type="radio" name="hoeren_q2" value="c" />
+              C: Nur Podcasts zu benutzen
+            </label>
+            <div class="feedback" id="feedback-hoeren_q2"></div>
+          </div>
+
+          <button type="button" class="btn-primary" id="checkHoerenBtn">Antworten überprüfen</button>
+        </form>
+        <div id="hoerenResultSummary" class="result-summary"></div>
       </div>
     </section>
 
@@ -464,36 +652,25 @@ Deshalb bin ich dafür/dagegen, dass ...
       </div>
 
       <div class="card">
-        <h2>Nützliche B2-Phrasen</h2>
-
-        <div class="phrase-block">
-          <div class="phrase-title">Struktur / Redemittel</div>
-          <ul class="phrase-list">
-            <li>Zum einen ..., zum anderen ...</li>
-            <li>Darüber hinaus / Außerdem / Zusätzlich</li>
-            <li>Im Vergleich zu ...</li>
-            <li>Ein weiterer wichtiger Punkt ist, dass ...</li>
-            <li>Abschließend möchte ich sagen, dass ...</li>
-          </ul>
+        <h2>KI-Schreibanalyse (Prototype)</h2>
+        <div class="hint">
+          Hier siehst du, wie später die KI-Analyse aussehen kann. In dieser reinen GitHub-Pages-Version gibt es noch keinen echten Server,
+          deshalb ist das Feedback unten nur eine Demo-Nachricht.
         </div>
 
-        <div class="phrase-block">
-          <div class="phrase-title">Meinung ausdrücken</div>
-          <ul class="phrase-list">
-            <li>Meiner Meinung nach ...</li>
-            <li>Ich bin der Ansicht, dass ...</li>
-            <li>Aus meiner Sicht ...</li>
-            <li>Ich vertrete die Meinung, dass ...</li>
-          </ul>
-        </div>
+        <textarea id="kiText" placeholder="Schreibe hier deinen B2-Text (E-Mail, Meinungstext, Beschwerde) ..."></textarea>
+        <button type="button" class="btn-primary" id="kiAnalyzeBtn">Pseudo-Analyse anzeigen</button>
 
-        <div class="phrase-block">
-          <div class="phrase-title">Höfliche Bitte / Nachfrage</div>
-          <ul class="phrase-list">
-            <li>Könnten Sie mir bitte sagen, ...?</li>
-            <li>Wäre es möglich, dass ...?</li>
-            <li>Ich wäre Ihnen sehr dankbar, wenn ...</li>
+        <div id="kiFeedback" class="ki-box" style="display:none;">
+          <strong>Beispiel-Feedback (Demo):</strong>
+          <ul>
+            <li>➤ Der Text hat eine klare Einleitung, könnte aber eine deutlichere Schlussfolgerung enthalten.</li>
+            <li>➤ Achte auf Groß- und Kleinschreibung bei Nomen (z.B. <em>deutsch</em> → <em>Deutsch</em>).</li>
+            <li>➤ Einige Sätze sind sehr lang. Trenne sie, damit der Text besser lesbar wird.</li>
           </ul>
+          <div class="hint">
+            In einer echten App würde hier die Antwort der KI stehen. Dafür braucht man einen Server mit OpenAI-API – das können wir als nächsten Schritt planen.
+          </div>
         </div>
       </div>
     </section>
@@ -507,9 +684,10 @@ Deshalb bin ich dafür/dagegen, dass ...
           <ul>
             <li>⏱ <strong>Tracker</strong>: Miss deine Lernzeit für Lesen, Hören, Schreiben usw.</li>
             <li>✍️ <strong>Schreiben-Bereich</strong>: Vorlagen & Phrasen für typische B2-Aufgaben.</li>
+            <li>📝 <strong>Tests</strong>: Beispieltests für Lesen und Hören mit Erklärungen.</li>
             <li>🔐 <strong>Datenschutz</strong>: Alle Daten werden nur im Browser (localStorage) gespeichert.</li>
           </ul>
-          <p>Geplant für später: mehr Schreibaufgaben, Vokabellisten für B2-Themen und evtl. Exportfunktion für Lehrer:innen.</p>
+          <p>Nächster Schritt: echter KI-Server für automatische Korrektur von B2-Texten und mehr Tests (Lesen/Hören) als Bibliothek.</p>
         </div>
       </div>
     </section>
@@ -520,6 +698,7 @@ Deshalb bin ich dafür/dagegen, dass ...
     const navButtons = document.querySelectorAll('.nav-btn');
     const sections = {
       tracker: document.getElementById('section-tracker'),
+      tests: document.getElementById('section-tests'),
       schreiben: document.getElementById('section-schreiben'),
       about: document.getElementById('section-about')
     };
@@ -529,14 +708,13 @@ Deshalb bin ich dafür/dagegen, dass ...
         const target = btn.getAttribute('data-section');
         navButtons.forEach(b => b.classList.remove('active'));
         btn.classList.add('active');
-
         Object.entries(sections).forEach(([key, section]) => {
           section.style.display = key === target ? 'block' : 'none';
         });
       });
     });
 
-    // ---------- TRACKER LOGIK ----------
+    // ---------- TRACKER ----------
     const startBtn = document.getElementById('startBtn');
     const stopBtn = document.getElementById('stopBtn');
     const timerStatus = document.getElementById('timerStatus');
@@ -552,11 +730,7 @@ Deshalb bin ich dafür/dagegen, dass ...
     function loadSessions() {
       const raw = localStorage.getItem('studySessions_b2');
       if (!raw) return [];
-      try {
-        return JSON.parse(raw);
-      } catch {
-        return [];
-      }
+      try { return JSON.parse(raw); } catch { return []; }
     }
 
     function saveSessions(sessions) {
@@ -567,9 +741,7 @@ Deshalb bin ich dafür/dagegen, dass ...
       const d = new Date(dateStr);
       if (Number.isNaN(d.getTime())) return dateStr;
       return d.toLocaleDateString('de-DE', {
-        year: 'numeric',
-        month: '2-digit',
-        day: '2-digit'
+        year: 'numeric', month: '2-digit', day: '2-digit'
       });
     }
 
@@ -587,7 +759,8 @@ Deshalb bin ich dafür/dagegen, dass ...
 
       sessions.forEach(session => {
         totalMinutes += session.durationMinutes;
-        totalsByType[session.taskType] = (totalsByType[session.taskType] || 0) + session.durationMinutes;
+        totalsByType[session.taskType] =
+          (totalsByType[session.taskType] || 0) + session.durationMinutes;
 
         const tr = document.createElement('tr');
 
@@ -643,7 +816,6 @@ Deshalb bin ich dafür/dagegen, dass ...
 
     function stopTimer() {
       if (startTime === null) return;
-
       const endTime = Date.now();
       const diffMs = endTime - startTime;
       const minutes = diffMs / 60000;
@@ -686,8 +858,126 @@ Deshalb bin ich dafür/dagegen, dass ...
       });
     });
 
-    // initial render
     renderSessions();
+
+    // ---------- LESEN-TEST ----------
+    const lesenAnswerKey = {
+      lesen_q1: {
+        correct: 'b',
+        explanation: 'Im Text werden sowohl Vorteile als auch Schwierigkeiten von Online-Sprachkursen beschrieben.'
+      },
+      lesen_q2: {
+        correct: 'b',
+        explanation: 'Es werden ausdrücklich Berufstätige und Eltern mit kleinen Kindern erwähnt.'
+      },
+      lesen_q3: {
+        correct: 'a',
+        explanation: 'Erinnerungen und Statistiken sollen helfen, dass Lernende motiviert bleiben und keine langen Pausen machen.'
+      }
+    };
+
+    const checkLesenBtn = document.getElementById('checkLesenBtn');
+    const lesenResultSummary = document.getElementById('lesenResultSummary');
+
+    checkLesenBtn.addEventListener('click', () => {
+      let correctCount = 0;
+      const total = Object.keys(lesenAnswerKey).length;
+
+      Object.entries(lesenAnswerKey).forEach(([qId, info]) => {
+        const selected = document.querySelector(`input[name="${qId}"]:checked`);
+        const feedbackEl = document.getElementById(`feedback-${qId}`);
+
+        if (!selected) {
+          feedbackEl.textContent = 'Keine Antwort ausgewählt.';
+          feedbackEl.className = 'feedback bad';
+          return;
+        }
+
+        if (selected.value === info.correct) {
+          correctCount++;
+          feedbackEl.textContent = 'Richtig. ' + info.explanation;
+          feedbackEl.className = 'feedback ok';
+        } else {
+          const letter = info.correct.toUpperCase();
+          feedbackEl.textContent = `Falsch. Richtige Antwort: ${letter}. ` + info.explanation;
+          feedbackEl.className = 'feedback bad';
+        }
+      });
+
+      lesenResultSummary.textContent =
+        `Du hast ${correctCount} von ${total} Fragen richtig beantwortet.`;
+    });
+
+    // ---------- HÖREN-TEST ----------
+    const hoerenAnswerKey = {
+      hoeren_q1: {
+        correct: 'b',
+        explanation: 'Der Text nennt verschiedene Lernformen: Sprachschule, Podcasts, Lernvideos.'
+      },
+      hoeren_q2: {
+        correct: 'b',
+        explanation: 'Es wird gesagt, dass schon 20 Minuten am Tag einen großen Unterschied machen.'
+      }
+    };
+
+    const checkHoerenBtn = document.getElementById('checkHoerenBtn');
+    const hoerenResultSummary = document.getElementById('hoerenResultSummary');
+
+    checkHoerenBtn.addEventListener('click', () => {
+      let correctCount = 0;
+      const total = Object.keys(hoerenAnswerKey).length;
+
+      Object.entries(hoerenAnswerKey).forEach(([qId, info]) => {
+        const selected = document.querySelector(`input[name="${qId}"]:checked`);
+        const feedbackEl = document.getElementById(`feedback-${qId}`);
+
+        if (!selected) {
+          feedbackEl.textContent = 'Keine Antwort ausgewählt.';
+          feedbackEl.className = 'feedback bad';
+          return;
+        }
+
+        if (selected.value === info.correct) {
+          correctCount++;
+          feedbackEl.textContent = 'Richtig. ' + info.explanation;
+          feedbackEl.className = 'feedback ok';
+        } else {
+          const letter = info.correct.toUpperCase();
+          feedbackEl.textContent = `Falsch. Richtige Antwort: ${letter}. ` + info.explanation;
+          feedbackEl.className = 'feedback bad';
+        }
+      });
+
+      hoerenResultSummary.textContent =
+        `Du hast ${correctCount} von ${total} Fragen richtig beantwortet.`;
+    });
+
+    // ---------- TRANSKRIPT ----------
+    const toggleTranscriptBtn = document.getElementById('toggleTranscriptBtn');
+    const transcriptBox = document.getElementById('transcriptBox');
+
+    toggleTranscriptBtn.addEventListener('click', () => {
+      const visible = transcriptBox.style.display !== 'none';
+      transcriptBox.style.display = visible ? 'none' : 'block';
+      toggleTranscriptBtn.textContent = visible
+        ? 'Transkript anzeigen'
+        : 'Transkript verbergen';
+    });
+
+    // ---------- KI-DEMO ----------
+    const kiBtn = document.getElementById('kiAnalyzeBtn');
+    const kiBox = document.getElementById('kiFeedback');
+    const kiText = document.getElementById('kiText');
+
+    kiBtn.addEventListener('click', () => {
+      if (!kiText.value.trim()) {
+        alert('Bitte schreibe zuerst einen Text.');
+        return;
+      }
+      kiBox.style.display = 'block';
+      // Здесь ПОКА нет настоящего запроса к ИИ.
+      // В реальном приложении кнопка будет отправлять текст на сервер с OpenAI-API.
+    });
   </script>
 </body>
 </html>
